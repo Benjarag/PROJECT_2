@@ -1,42 +1,42 @@
 project-root/
-├── docker-compose.yml            
+├── docker-compose.yaml            
 │
 ├── BuyerService/                
-│   ├── main.py                   
-│   ├── models.py                 
-│   ├── database.py              
-│   └── validations.py            
+│   ├── buyer_service_main.py                   
+│   ├── buyer_service_models.py                 
+│   ├── buyer_service_database.py              
+│   └── buyer_service_validations.py            
 │
 ├── EmailService/                 
-│   ├── main.py                   
-│   ├── templates/                
-│   ├── events.py                 
-│   └── utils.py                  
+│   ├── email_service_main.py                   
+│   ├── email_service_templates/                
+│   ├── email_service_events.py                 
+│   └── email_service_utils.py                  
 │
 ├── InventoryService/             
-│   ├── main.py                   
-│   ├── models.py                 
-│   ├── database.py              
-│   ├── events.py                 
-│   └── validations.py           
+│   ├── inventory_service_main.py                   
+│   ├── inventory_service_models.py                 
+│   ├── inventory_service_database.py              
+│   ├── inventory_service_events.py                 
+│   └── inventory_service_validations.py           
 │
 ├── MerchantService/              
-│   ├── main.py                   
-│   ├── models.py                 
-│   ├── database.py               
-│   ├── events.py                 
-│   └── validations.py            
+│   ├── merchant_service_main.py                   
+│   ├── merchant_service_models.py                 
+│   ├── merchant_service_database.py               
+│   ├── merchant_service_events.py                 
+│   └── merchant_service_validations.py            
 │
 ├── OrderService/                 
-│   ├── order_main.py             
-│   ├── order_validation.py       
-│   ├── models.py                 
-│   ├── database.py               
-│   └── events.py                 
+│   ├── order_service_main.py             
+│   ├── order_service_validation.py       
+│   ├── order_service_models.py                 
+│   ├── order_service_database.py               
+│   └── order_service_events.py                 
 │
 └── PaymentService/               
-    ├── main.py                  
-    ├── luhn.py                   
-    ├── models.py                 
-    ├── database.py               
-    └── events.py                 
+    ├── payment_service_main.py                  
+    ├── payment_service_luhn.py                   
+    ├── payment_service_models.py                 
+    ├── payment_service_database.py               
+    └── payment_service_events.py                 
