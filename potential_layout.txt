@@ -42,3 +42,9 @@ project-root/
     ├── payment_service_models.py                 
     ├── payment_service_database.py               
     └── payment_service_events.py                 
+
+
+Hvar er request response:
+
+Milli users og MerchantService
+Millu users og OrderService
