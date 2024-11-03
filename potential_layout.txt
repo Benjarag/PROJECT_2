@@ -1,11 +1,15 @@
 project-root/
 ├── docker-compose.yaml            
 │
-├── BuyerService/                
-│   ├── buyer_service_main.py                   
-│   ├── buyer_service_models.py                 
-│   ├── buyer_service_database.py              
-│   └── buyer_service_validations.py            
+├── BuyerService/
+│   ├── buyer_service_main.py              # Main application file to run the FastAPI app
+│   ├── buyer_service_models.py            # Pydantic models for request/response schemas
+│   ├── buyer_service_database.py          # Database connection and CRUD operations for buyers
+│   ├── buyer_service_validations.py       # Validation logic for incoming requests
+│   ├── buyer_repository.py                 # Repository class for database operations related to buyers
+│   ├── buyer_service.py                    # Service class for business logic related to buyers
+│   ├── container.py                       # Dependency injection container definition
+│   └── endpoints.py                       # FastAPI route definitions and handlers for buyer-related endpoints│           
 │
 ├── EmailService/                 
 │   ├── email_service_main.py                   
