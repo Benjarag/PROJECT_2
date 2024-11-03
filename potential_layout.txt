@@ -45,6 +45,20 @@ project-root/
 
 
 Hvar er request response:
-
 Milli users og MerchantService
-Millu users og OrderService
+Milli users og OrderService
+Milli users og BuyerService
+Milli users og InventoryService
+Milli MerchantService og OrderService
+Milli OrderService og BuyerService
+Milli OrderService og InventoryService
+
+Hvar er EventDriven:
+Milli OrderService og Exchange (make Order-created-event)
+Milli Exchange og 2 mismuandi queue
+Fyrsta queue milli EmailService(instances 1 and 2)
+Queue 2 milli Paymentservice
+PaymentService 2 options (Payment succes event ot failure event) both sent to Exchange
+Exchange sendir to 2 diffirent queues 
+Queue 1 send to both EmailService(instances 1 and 2)
+Queue 2 send to InventoryService
