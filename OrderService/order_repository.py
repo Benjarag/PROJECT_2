@@ -1,6 +1,8 @@
 import json
 import os
 
+from OrderService.utils.masking import mask_credit_card
+
 class OrderRepository:
     def __init__(self, file_path):
         self.file_path = file_path
@@ -59,7 +61,7 @@ class OrderRepository:
                     return "Merchant does not allow discount"
 
                 # If all checks pass, mask card number and calculate total price
-                order['cardNumber'] = mask_card_number(order['creditCard']['cardNumber'])
+                order['cardNumber'] = mask_credit_card(order['creditCard']['cardNumber'])
                 product_price = self.get_product_price(order['productId'])  # Implement as needed
                 order['totalPrice'] = product_price * (1 - discount)
 
