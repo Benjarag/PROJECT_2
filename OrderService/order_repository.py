@@ -1,6 +1,5 @@
 import json
-import os
-
+from fastapi import HTTPException
 from OrderService.utils.masking import mask_credit_card
 
 class OrderRepository:
@@ -10,9 +9,7 @@ class OrderRepository:
     def save_order(self, order_data) -> int:
         # Save order to persistent storage and return the generated ID
         order_id = self._get_next_id()
-
-        # Include the ID in the order data
-        order_data['id'] = order_id
+        order_data['id'] = order_id  # include the id in the order data
 
         # Save the order in JSON format
         with open(self.file_path, 'a') as f:
@@ -37,35 +34,15 @@ class OrderRepository:
             with open(self.file_path, 'r') as f:
                 orders = [json.loads(line) for line in f.readlines()]
         except FileNotFoundError:
-            return "No orders found."
+            return "Order not found"
 
         for order in orders:
             if order['id'] == order_id:
                 # Perform validation checks
-                merchant_id = order.get('merchantId')
-                buyer_id = order.get('buyerId')
-                product_id = order.get('productId')
-                discount = order.get('discount', 0)
-
-                if not self.merchant_exists(merchant_id):
-                    return "Merchant does not exist"
-                if not self.buyer_exists(buyer_id):
-                    return "Buyer does not exist"
-                if not self.product_exists(product_id):
-                    return "Product does not exist"
-                if self.is_product_sold_out(product_id):
-                    return "Product is sold out"
-                if not self.product_belongs_to_merchant(product_id, merchant_id):
-                    return "Product does not belong to merchant"
-                if not self.merchant_allows_discount(merchant_id, discount):
-                    return "Merchant does not allow discount"
-
-                # If all checks pass, mask card number and calculate total price
                 order['cardNumber'] = mask_credit_card(order['creditCard']['cardNumber'])
                 product_price = self.get_product_price(order['productId'])  # Implement as needed
-                order['totalPrice'] = product_price * (1 - discount)
+                order['totalPrice'] = product_price * (1 - order.get('discount', 0))
 
-                # Return the order in the specified format
                 return {
                     "productId": order['productId'],
                     "merchantId": order['merchantId'],
@@ -76,27 +53,45 @@ class OrderRepository:
 
         return "Order not found"
 
+    def validate_order(self, order):
+        if not self.merchant_exists(order['merchantId']):
+            raise HTTPException(status_code=400, detail="Merchant does not exist")
+        
+        if not self.buyer_exists(order['buyerId']):
+            raise HTTPException(status_code=400, detail="Buyer does not exist")
+        
+        if not self.product_exists(order['productId']):
+            raise HTTPException(status_code=400, detail="Product does not exist")
+        
+        if self.is_product_sold_out(order['productId']):
+            raise HTTPException(status_code=400, detail="Product is sold out")
+        
+        if not self.product_belongs_to_merchant(order['productId'], order['merchantId']):
+            raise HTTPException(status_code=400, detail="Product does not belong to merchant")
+        
+        if not self.merchant_allows_discount(order['discount']):
+            raise HTTPException(status_code=400, detail="Merchant does not allow discount")
+
     # Example validation methods:
     def merchant_exists(self, merchant_id):
-        # Implement the logic to check if the merchant exists
-        return True  # Replace with actual validation
-
+        # how do I check this?!
+        return merchant_id in self.merchant_data_source
+    
     def buyer_exists(self, buyer_id):
-        # Implement the logic to check if the buyer exists
+        # how do I check this?!
         return True  # Replace with actual validation
 
     def product_exists(self, product_id):
-        # Implement the logic to check if the product exists
+        # how do I check this?!
         return True  # Replace with actual validation
 
     def is_product_sold_out(self, product_id):
-        # Implement the logic to check if the product is sold out
+        # how do I check this?!
         return False  # Replace with actual validation
 
     def product_belongs_to_merchant(self, product_id, merchant_id):
-        # Implement the logic to check if the product belongs to the merchant
+        # how do I check this?!
         return True  # Replace with actual validation
 
-    def merchant_allows_discount(self, merchant_id, discount):
-        # Implement the logic to check if the merchant allows discounts
-        return discount == 0  # Replace with actual validation
+    def merchant_allows_discount(self, discount):
+        return True
