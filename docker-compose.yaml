@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  order-service:
+    build: ./OrderService
+    ports:
+      - "8000:8000"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - order_data:/app/orders  # Persist order data in a text file
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    container_name: my_rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  order_data:  # For persistent order storage
