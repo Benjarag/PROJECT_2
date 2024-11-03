@@ -1,0 +1,42 @@
+project-root/
+├── docker-compose.yml            
+│
+├── BuyerService/                
+│   ├── main.py                   
+│   ├── models.py                 
+│   ├── database.py              
+│   └── validations.py            
+│
+├── EmailService/                 
+│   ├── main.py                   
+│   ├── templates/                
+│   ├── events.py                 
+│   └── utils.py                  
+│
+├── InventoryService/             
+│   ├── main.py                   
+│   ├── models.py                 
+│   ├── database.py              
+│   ├── events.py                 
+│   └── validations.py           
+│
+├── MerchantService/              
+│   ├── main.py                   
+│   ├── models.py                 
+│   ├── database.py               
+│   ├── events.py                 
+│   └── validations.py            
+│
+├── OrderService/                 
+│   ├── order_main.py             
+│   ├── order_validation.py       
+│   ├── models.py                 
+│   ├── database.py               
+│   └── events.py                 
+│
+└── PaymentService/               
+    ├── main.py                  
+    ├── luhn.py                   
+    ├── models.py                 
+    ├── database.py               
+    └── events.py                 
