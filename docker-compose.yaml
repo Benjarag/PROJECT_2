@@ -19,5 +19,15 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
+  buyer-service:
+    build: ./BuyerService
+    ports:
+      - "8002:8000"
+    
+
+
+
 volumes:
   order_data:  # For persistent order storage
+
+    
