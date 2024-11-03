@@ -1,5 +1,5 @@
 from dependency_injector import containers, providers
-from buyer_repository import BuyerRepository  # Import your BuyerRepository class
+from BuyerService.buyer_service_repository import BuyerRepository  # Import your BuyerRepository class
 from buyer_service import BuyerService  # Import your BuyerService class
 
 class Container(containers.DeclarativeContainer):

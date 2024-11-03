@@ -3,7 +3,7 @@ from dependency_injector.wiring import inject, Provide
 from models.buyer_model import BuyerModel
 from buyer_service_container import Container
 from buyer_service import BuyerService
-from buyer_repository import BuyerRepository
+from BuyerService.buyer_service_repository import BuyerRepository
 
 router = APIRouter()
 
@@ -11,7 +11,7 @@ router = APIRouter()
 @inject
 async def get_buyer(
     id: int, 
-    buyer_service: BuyerRepository = Depends(Provide[Container.buyer_repository_provider])
+    buyer_repository: BuyerRepository = Depends(Provide[Container.buyer_repository_provider])
 ):
     buyer = buyer_repository.get_buyer(id)
     
@@ -31,5 +31,5 @@ async def save_buyers(buyer: BuyerModel,
                             Provide[Container.buyer_repository_provider])):
     # Save the buyer to the repository
     buyer_id = buyer_repository.save_buyer(buyer.buyer)
-    buyer_sender.send_buyer(buyer.buyer)  # Send buyer event through the buyer sender
+    buyer_service.send_buyer(buyer.buyer)  # Send buyer event through the buyer sender
     return {"id": buyer_id}
