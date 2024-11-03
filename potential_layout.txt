@@ -32,7 +32,9 @@ project-root/
 │   ├── order_service_validation.py       
 │   ├── order_service_models.py                 
 │   ├── order_service_database.py               
-│   └── order_service_events.py                 
+│   └── order_service_events.py  
+│   └──Utils/
+│       └──merchant         
 │
 └── PaymentService/               
     ├── payment_service_main.py                  
