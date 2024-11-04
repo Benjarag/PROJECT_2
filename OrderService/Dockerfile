@@ -1,11 +1,17 @@
-FROM python:3.8-slim-buster
+# Base image
+FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-
-RUN pip install -r requirements.txt
-
+# Copy project files
 COPY . .
 
-CMD ["python", "application.py"]
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose port for FastAPI
+EXPOSE 8000
+
+# Run the app with Uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

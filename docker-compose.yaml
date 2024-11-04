@@ -1,23 +1,35 @@
-version: "3.8"
+version: '3.8'
 services:
-  order-service:
-    build: ./OrderService
+  orderservice:
+    build:
+      context: ./OrderService
+    container_name: orderservice
     ports:
       - "8000:8000"
     depends_on:
       - rabbitmq
-    volumes:
-      - order_data:/app/orders  # Persist order data in a text file
+      - orderservice_db
+
+  # Other services such as BuyerService, MerchantService, InventoryService, and EmailService
 
   rabbitmq:
-    image: "rabbitmq:3-management"
-    container_name: my_rabbitmq
+    image: rabbitmq:3-management
+    container_name: rabbitmq
     ports:
-      - "15672:15672"
       - "5672:5672"
+      - "15672:15672"
+
+  orderservice_db:
+    image: postgres:latest
+    container_name: orderservice_db
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: orders_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - orderservice_db_data:/var/lib/postgresql/data
 
 volumes:
-  order_data:  # For persistent order storage
+  orderservice_db_data:
