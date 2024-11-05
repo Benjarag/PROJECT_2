@@ -1,30 +1,26 @@
-# endpoints.py
-from fastapi import APIRouter, Depends, HTTPException
-from models.merchant_model import MerchantModel
+from fastapi import FastAPI, HTTPException, status
+from typing import List
 from merchant_repository import MerchantRepository
-from dependency_injector.wiring import inject, Provide
-from container import Container
+from models.merchant_model import Merchant
 
-router = APIRouter()
+app = FastAPI()
+merchant_repository = MerchantRepository()
 
-@router.post('/merchants', status_code=201)
-@inject
-async def create_merchant(
-    merchant: MerchantModel,
-    merchant_repository: MerchantRepository = Depends(Provide[Container.merchant_repository_provider])
-):
+@app.post("/merchants", response_model=int, status_code=status.HTTP_201_CREATED)
+async def create_merchant(merchant: Merchant):
+    """Create a new merchant."""
     merchant_id = merchant_repository.save_merchant(merchant.dict())
-    return {"id": merchant_id}
+    return merchant_id
 
-@router.get('/merchants/{id}', status_code=200)
-@inject
-async def get_merchant(
-    id: int,
-    merchant_repository: MerchantRepository = Depends(Provide[Container.merchant_repository_provider])
-):
+@app.get("/merchants/{id}", response_model=Merchant, status_code=status.HTTP_200_OK)
+async def get_merchant(id: int):
+    """Retrieve a merchant by ID."""
     merchant = merchant_repository.get_merchant(id)
-    
-    if merchant is None:
-        raise HTTPException(status_code=404, detail="Merchant does not exist")
-
+    if not merchant:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Merchant not found")
     return merchant
+
+@app.get("/merchants", response_model=List[Merchant])
+async def list_merchants():
+    """List all merchants."""
+    return merchant_repository.merchants()

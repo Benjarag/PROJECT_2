@@ -1,0 +1,20 @@
+{
+    "merchants": [
+        {
+            "id": 123,
+            "name": "John Johnson",
+            "ssn": "4000000000",
+            "email": "john.johnson@email.com",
+            "phoneNumber": "1234567",
+            "allows_discount": true
+        },
+        {
+            "id": 456,
+            "name": "Jane Smith",
+            "ssn": "5000000000",
+            "email": "jane.smith@email.com",
+            "phoneNumber": "7654321",
+            "allows_discount": false
+        }
+    ]
+}
