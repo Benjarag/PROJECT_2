@@ -1,0 +1,18 @@
+[
+    {
+        "id": "someId",
+        "name": "MisterKingBoyMan", 
+        "ssn": "123456789",
+        "email": "somenice@email.com",
+        "phone_number": "1234567",
+        "allows_discount": false
+    },
+    {
+        "id": "otherId",
+        "name": "MisterPrinceBoyMan", 
+        "ssn": "987654321",
+        "email": "othernice@email.com",
+        "phone_number": "7654321",
+        "allows_discount": false
+    }
+]
