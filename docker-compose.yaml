@@ -1,13 +1,13 @@
 version: "3.8"
 services:
-  order-service:
-    build: ./OrderService
-    ports:
-      - "8000:8000"
-    depends_on:
-      - rabbitmq
-    volumes:
-      - order_data:/app/orders  # Persist order data in a text file
+  # order-service:
+  #   build: ./OrderService
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - rabbitmq
+  #   volumes:
+  #     - order_data:/app/orders  # Persist order data in a text file
 
   rabbitmq:
     image: "rabbitmq:3-management"
@@ -18,6 +18,16 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+  merchant-service:
+    build: ./MerchantService
+    ports:
+      - "8001:8001"
+    depends_on:
+      - rabbitmq
+    volumes:
+      - order_data:/app/orders  # Persist order data in a text file
+      - merchant_data:/app/merchants  # Persist merchant data in a JSON file
 
 volumes:
   order_data:  # For persistent order storage
+  merchant_data:  # For persistent merchant storage

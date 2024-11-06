@@ -1,4 +1,4 @@
-from MerchantService.model import Merchant
+from model import Merchant
 import uvicorn
 from typing import Dict, List
 from fastapi import FastAPI, HTTPException, status
@@ -9,7 +9,7 @@ app = FastAPI()
 
 merchant = Merchant()
 
-DATABASE_FILE = "MerchantService/MerchantDB.json"
+DATABASE_FILE = "./MerchantDB.json"
 
 def read_merchants(file_path: str):
 

@@ -7,4 +7,3 @@ class Merchant(BaseModel):
     email: str
     phone_number: str 
     allows_discount: bool
-
