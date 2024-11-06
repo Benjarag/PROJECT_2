@@ -1,68 +1,29 @@
+version: "3.8"
+
 services:
-  buyer-service:
-    build: ./BuyerService
-    container_name: buyer-service
+  buyer_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8002:8002"
     volumes:
-      - ./BuyerService/buyer-db:/app/buyer-db  # Mount the buyer-db folder for persistent data
+      - ./BuyerApi/buyer-db:/app/data  # Make sure your db file is here for persistence
     depends_on:
       - rabbitmq
 
   rabbitmq:
     image: "rabbitmq:3-management"
-    container_name: rabbitmq
     ports:
-      - "15672:15672"  # RabbitMQ management interface
-      - "5672:5672"    # RabbitMQ AMQP protocol
+      - "5672:5672"
+      - "15672:15672"
 
+  buyer_db:
+    image: "mongo:latest"  # Optional DB for BuyerService, if you use MongoDB
+    container_name: buyer_db
+    ports:
+      - "27017:27017"
+
+volumes:
   buyer-db:
-    image: "busybox"
-    container_name: buyer-db
-    command: ["tail", "-f", "/dev/null"]  # Keeps the container alive for persistent data
-    volumes:
-      - ./BuyerService/buyer-db:/buyer-db
-
-
-  # orderservice:
-  #   build: ./OrderService
-  #   container_name: orderservice
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     - merchantservice
-  #     - buyerservice
-  #     # - rabbitmq
-  #   volumes:
-  #     - ./OrderService/OrdersDatabase.json:/app/OrdersDatabase.json  # Mount the JSON file
-  #     # Uncomment these if needed
-  #     # - ./OrderService/MerchantService/MerchantDatabase.json:/app/MerchantService/MerchantDatabase.json
-  #     # - ./OrderService/BuyerService/BuyerDatabase.json:/app/BuyerService/BuyerDatabase.json
-  #   command: ["uvicorn", "endpoints:app", "--host", "0.0.0.0", "--port", "8000"]
-
-
-  # merchantservice:
-  #   build: ./MerchantService
-  #   container_name: merchantservice
-  #   ports:
-  #     - "8001:8000"  # Expose on port 8001 externally, maps to 8000 internally
-  #   # depends_on:
-  #   #   - rabbitmq
-  #   volumes:
-  #     - ./MerchantService/MerchantDatabase.json:/app/MerchantDatabase.json  # Mount merchant DB
-  #   command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001"]
-
-
-  # Uncomment if you plan to add InventoryService
-  # inventoryservice:
-  #   build:
-  #     context: ./InventoryService
-  #   container_name: inventoryservice
-  #   ports:
-  #     - "8003:8000"  # Expose on port 8003 externally, maps to 8000 internally
-  #   depends_on:
-  #     - rabbitmq
-  #   environment:
-  #     - RABBITMQ_URL=amqp://rabbitmq:5672
-  #   volumes:
-  #     - ./InventoryService/InventoryDatabase.json:/app/InventoryDatabase.json  # Mount inventory DB
+    driver: local

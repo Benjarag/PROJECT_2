@@ -1,19 +1,23 @@
+   
 from dependency_injector import containers, providers
 import pika
-from buyer_repository import BuyerRepository
-from buyer_sender import BuyerSender
+from BuyerApi.buyer_repository import BuyerRepository
+from BuyerApi.buyer_sender import BuyerSender
 
 class Container(containers.DeclarativeContainer):
+    # Define the configuration provider
     config = providers.Configuration()
 
     # RabbitMQ connection provider
     rabbit_connection = providers.Singleton(
-        lambda: pika.BlockingConnection(pika.ConnectionParameters(host=config.rabbitmq.host))
+        lambda config: pika.BlockingConnection(pika.ConnectionParameters(host=config.rabbitmq.host)),
+        config
     )
 
     # RabbitMQ queue provider
     buyer_queue = providers.Singleton(
-        lambda: rabbit_connection().channel().queue_declare(queue='buyer_queue')
+        lambda rabbit_connection: rabbit_connection().channel().queue_declare(queue='buyer_queue'),
+        rabbit_connection
     )
 
     # Buyer repository provider

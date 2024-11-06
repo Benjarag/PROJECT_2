@@ -12,3 +12,5 @@ class BuyerSender:
             body=json.dumps(buyer)
         )
         print("Buyer update sent!")
+
+ 

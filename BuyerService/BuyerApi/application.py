@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from container import Container
+from BuyerApi.container import Container
 import endpoints
 
 
