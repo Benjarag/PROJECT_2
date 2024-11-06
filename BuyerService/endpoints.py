@@ -32,6 +32,6 @@ async def create_buyer(buyer: BuyerModel,
                             Provide[Container.buyer_repository_provider])):
 
     # TODO: save buyer and send buyer event
-    buyer_id = buyer_repository.save_buyer(buyer.buyer)  # Save the buyer to the repository
+    buyer_id = buyer_repository.create_buyer(buyer.buyer)  # Save the buyer to the repository
     buyer_sender.send_buyer(buyer.buyer)  # Send buyer event through the buyer sender
     return {"id": buyer_id}

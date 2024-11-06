@@ -9,6 +9,15 @@ services:
     volumes:
       - order_data:/app/orders  # Persist order data in a text file
 
+  buyer-service:
+    build: ./BuyerService  # Path to your buyer service
+    ports:
+      - "8002:8002"  # Exposing buyer service on port 8002
+    depends_on:
+      - buyer-db
+    volumes:
+      - buyer_data:/app/buyers  # Persist buyer data in a volume
+
   rabbitmq:
     image: "rabbitmq:3-management"
     container_name: my_rabbitmq
@@ -19,5 +28,17 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
+  buyer-db:
+    image: "postgres:latest"  # Or another database of your choice
+    container_name: buyer-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: buyer_db
+    volumes:
+      - buyer_db_data:/var/lib/postgresql/data  # Persist database data
+
 volumes:
   order_data:  # For persistent order storage
+  buyer_data:  # For persistent buyer data
+  buyer_db_data:  # For persistent buyer database storage
