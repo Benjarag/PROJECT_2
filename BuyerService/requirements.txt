@@ -4,3 +4,4 @@ fastapi==0.70.0
 uvicorn==0.15.0
 dependency-injector==4.36.2
 pydantic==1.8.2
+email-validator==1.1.3
