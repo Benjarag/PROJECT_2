@@ -17,7 +17,7 @@ class Product(BaseModel):
 
 class InventoryManagement:
     def __init__(self) -> None:
-        self.FILE_PATH = 'inventory_repo.json'
+        self.FILE_PATH = 'inventory_data.json'
         self.initialize_file()
 
     def initialize_file(self):
