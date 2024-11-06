@@ -52,3 +52,4 @@ if __name__ == '__main__':
     finally:
         channel.stop_consuming()
         connection.close()
+
