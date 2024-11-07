@@ -1,12 +1,3 @@
-
-from pydantic import BaseModel, conint
-
-class aCreditCard(BaseModel):
-    cardNumber = str
-    expirationMonth = conint(ge=1, le=12)
-    expirationYear = int
-    cvc = conint(ge=100, le=999)
-
 class CreditCard:
     def __init__(self, cardNumber, expirationMonth, expirationYear, cvc) -> None:
         self.cardNumber = cardNumber
@@ -23,8 +14,8 @@ class CardValidator:
     def validate_card_number(self):
 
         #Access card number and change all values to integers
-        pan = [int(i) for i in self.credit_card[::-1]]
-        for i in pan:
+        pan = [int(i) for i in self.credit_card.cardNumber[::-1]]
+        for i in range(len(pan)):
             pan[i] = int(pan[i])
 
         #1=True, Other=False
@@ -41,13 +32,13 @@ class CardValidator:
     def validate_expiration(self):
         if self.credit_card.expirationMonth < 1 or self.credit_card.expirationMonth > 12:
             return 0
-        if len(self.credit_card.expirationYear) != 4:
+        if len(str(self.credit_card.expirationYear)) != 4:
             return 0
         
         return 1
     
     def validate_cvc(self):
-        if len(self.credit_card.cvc) != 3:
+        if len(str(self.credit_card.cvc)) != 3:
             return 0
         
         return 1

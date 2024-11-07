@@ -2,11 +2,16 @@ import pika
 import json
 import os
 from card_validation import CardValidator, CreditCard
+from pydantic import BaseModel
+
+class Payment(BaseModel):
+    orderId: int
+    state: str
 
 
 
 class PaymentProducer:
-    def __init__(self, rabbitmq_host='rabbitmq', order_queue='order_queue', payment_result_queue='payment_queue', json_file='./PaymentService/card_validations.json'):
+    def __init__(self, rabbitmq_host='rabbitmq', order_queue='order_queue', payment_result_queue='payment_queue', json_file='paymentDB.json'):
         self.rabbitmq_host = rabbitmq_host
         self.order_queue = order_queue
         self.payment_result_queue = payment_result_queue
@@ -74,9 +79,11 @@ class PaymentProducer:
             ch.basic_ack(delivery_tag=method.delivery_tag)
     
     def start_consuming(self):
-        self.channel.basic_consume(queue=self.order_queue, on_message_callback=self.process_order_payment())
+        self.channel.basic_consume(queue=self.order_queue, on_message_callback=self.process_order_payment)
         self.channel.start_consuming()
 
     def close_connection(self):
         if self.connection.is_open():
             self.connection.close()
+
+
