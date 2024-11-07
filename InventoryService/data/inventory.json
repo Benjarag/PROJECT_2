@@ -12,5 +12,12 @@
         "price": 123,
         "quantity": 20,
         "reserved": 0
+    },
+    "3": {
+        "merchantId": 123,
+        "productName": "some product name",
+        "price": 123,
+        "quantity": 20,
+        "reserved": 0
     }
 }
