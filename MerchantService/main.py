@@ -5,7 +5,9 @@ from fastapi import FastAPI, HTTPException, status
 import json 
 
 
+
 app = FastAPI()
+uvi = uvicorn()
 
 merchant = Merchant()
 
@@ -63,6 +65,6 @@ async def get_merchant(merchant_id: int):
     }
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8001)
+    uvi.run(app, host="0.0.0.0", port=8001)
 
 
