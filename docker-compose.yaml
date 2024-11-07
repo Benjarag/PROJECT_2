@@ -2,28 +2,11 @@ version: "3.8"
 
 services:
   buyer_service:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: ./BuyerService
     ports:
       - "8002:8002"
     volumes:
-      - ./BuyerApi/buyer-db:/app/data  # Make sure your db file is here for persistence
-    depends_on:
-      - rabbitmq
-
-  rabbitmq:
-    image: "rabbitmq:3-management"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-
-  buyer_db:
-    image: "mongo:latest"  # Optional DB for BuyerService, if you use MongoDB
-    container_name: buyer_db
-    ports:
-      - "27017:27017"
+      - ./data:/app/data  # Make sure your db file is here for persistence
 
 volumes:
   buyer-db:
-    driver: local
