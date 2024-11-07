@@ -38,3 +38,15 @@ class InventoryRepository:
         with open(self.file_path, 'r') as file:
             products = json.load(file)
             return products.get(product_id)  # Directly access by integer ID
+
+    def update_product(self, product_id: int, merchant_id: int, product_name: str, price: float, quantity: int) -> int:
+        # Load existing products
+        with open(self.file_path, 'r+') as file:
+            products = json.load(file)
+        products[product_id]["quantity"] -= 1
+        products[product_id]["reserved"] += 1
+        file.seek(0)
+
+
+
+
