@@ -18,6 +18,7 @@
         "phoneNumber": "1234567"
     },
     "4": {
+<<<<<<< HEAD
         "name": "sum cute",
         "ssn": "123456789",
         "email": "nums@gmail.com",
@@ -39,6 +40,29 @@
         "name": "sum cute",
         "ssn": "123456789",
         "email": "nums@gmail.com",
+=======
+        "name": "benja",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    },
+    "5": {
+        "name": "benja 2",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    },
+    "6": {
+        "name": "benjarag",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    },
+    "7": {
+        "name": "benjarag",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+>>>>>>> from_benjamin_heim_implementing_inventory_service
         "phoneNumber": "1234567"
     }
 }
