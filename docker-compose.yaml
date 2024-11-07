@@ -25,9 +25,9 @@ services:
     depends_on:
       - rabbitmq
     volumes:
-      - order_data:/app/orders  # Persist order data in a text file
-      - merchant_data:/app/merchants  # Persist merchant data in a JSON file
+      #order_data:/app/orders  # Persist order data in a text file
+      - /MerchantService/app/merchants  # Persist merchant data in a JSON file
 
 volumes:
-  order_data:  # For persistent order storage
+  #order_data:  # For persistent order storage
   merchant_data:  # For persistent merchant storage

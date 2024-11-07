@@ -7,9 +7,9 @@ import json
 
 
 app = FastAPI()
-uvi = uvicorn()
+# uvi = uvicorn()
 
-merchant = Merchant()
+# merchant = Merchant()
 
 DATABASE_FILE = "./MerchantDB.json"
 
@@ -33,7 +33,7 @@ async def create_merchant(merchant: Merchant):
 
     if merchants_db: 
 
-        previous_id = max(merchant["id"] for merchant in merchants_db.values()) # stærsta id er væntanlega seinasta id sem var assignað til merchant.
+        previous_id = max(merchant["id"] for merchant in merchants_db.values()) # stærsta id er væntanlega rass  seinasta id sem var assignað til merchant.
     else:
 
         previous_id = 0
@@ -57,6 +57,7 @@ async def get_merchant(merchant_id: int):
         raise HTTPException(status_code=404, detail="Merchant not found")
     
     return {
+        "id": merchant["id"],
         "name" : merchant["name"],
         "ssn" : merchant["ssn"],   
         "email" : merchant["email"],
@@ -65,6 +66,6 @@ async def get_merchant(merchant_id: int):
     }
 
 if __name__ == "__main__":
-    uvi.run(app, host="0.0.0.0", port=8001)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
 
 
