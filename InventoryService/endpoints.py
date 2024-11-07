@@ -32,4 +32,3 @@ async def get_product(id: str):
         raise HTTPException(status_code=404, detail="Product does not exist")
     return product
 
-@router.put()
