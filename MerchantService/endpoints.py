@@ -1,26 +1,34 @@
-from fastapi import FastAPI, HTTPException, status
-from typing import List
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from merchant_repository import MerchantRepository
-from models.merchant_model import Merchant
 
-app = FastAPI()
-merchant_repository = MerchantRepository()
+router = APIRouter()
+merchant_repo = MerchantRepository(file_path='./data/merchants.json')
 
-@app.post("/merchants", response_model=int, status_code=status.HTTP_201_CREATED)
-async def create_merchant(merchant: Merchant):
-    """Create a new merchant."""
-    merchant_id = merchant_repository.save_merchant(merchant.dict())
-    return merchant_id
+# Request model for buyer data
+class MerchantCreateRequest(BaseModel):
+    name: str
+    ssn: str
+    email: str
+    phoneNumber: str
+    allowsDiscount: bool
 
-@app.get("/merchants/{id}", response_model=Merchant, status_code=status.HTTP_200_OK)
-async def get_merchant(id: int):
-    """Retrieve a merchant by ID."""
-    merchant = merchant_repository.get_merchant(id)
-    if not merchant:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Merchant not found")
+# Endpoint to create a buyer
+@router.post("/merchants", status_code=201)
+async def create_merchant(merchant: MerchantCreateRequest):
+    merchant_id = merchant_repo.save_merchant(
+        name=merchant.name,
+        ssn=merchant.ssn,
+        email=merchant.email,
+        phone_number=merchant.phoneNumber,
+        allows_discount=merchant.allowsDiscount
+    )
+    return {"merchant_id": merchant_id}
+
+# Endpoint to retrieve a buyer by ID
+@router.get("/merchants/{id}", status_code=200)
+async def get_buyer(id: str):
+    merchant = merchant_repo.get_merchant(id)
+    if merchant is None:
+        raise HTTPException(status_code=404, detail="Merchant does not exist")
     return merchant
-
-@app.get("/merchants", response_model=List[Merchant])
-async def list_merchants():
-    """List all merchants."""
-    return merchant_repository.merchants()

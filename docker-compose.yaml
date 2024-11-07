@@ -8,6 +8,13 @@ services:
     volumes:
       - ./BuyerService:/app
       - ./BuyerService/data:/app/data  # Make sure your db file is here for persistence
+  merchant-service:
+    build: ./MerchantService
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./MerchantService:/app
+      - ./MerchantService/data:/app/data  # Make sure your db file is here for persistence
 
   inventory-service:
     build: ./InventoryService
