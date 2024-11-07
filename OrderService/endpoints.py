@@ -22,7 +22,7 @@ async def create_order(order: OrderRequest):
 
         # Retrieve product info from the merchant service
         async with httpx.AsyncClient() as client:
-            merchant_response = await client.get(f"http://merchantservice:80/merchants/{order.merchantId}")
+            merchant_response = await client.get(f"http://merchantservice:8001/merchants/{order.merchantId}")
             merchant_response.raise_for_status()  # Raise an exception for HTTP errors
             merchant = merchant_response.json()
 

@@ -1,12 +1,13 @@
 version: "3.8"
 
 services:
-  buyer_service:
+  buyer-service:
     build: ./BuyerService
     ports:
       - "8002:8002"
     volumes:
-      - ./data:/app/data  # Make sure your db file is here for persistence
+      - ./BuyerService:/app
+      - ./BuyerService/data:/app/data  # Make sure your db file is here for persistence
 
 volumes:
-  buyer-db:
+  buyer-service-data:

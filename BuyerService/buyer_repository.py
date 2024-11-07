@@ -3,10 +3,10 @@ import os
 import uuid
 
 class BuyerRepository:
-    def __init__(self, file_path: str = '/data/buyers.json'):
+    def __init__(self, file_path: str = './data/buyers.json'):
         self.file_path = file_path
         # Ensure the directory exists
-        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
+        #os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
         # Ensure the JSON file exists
         if not os.path.exists(self.file_path):
             with open(self.file_path, 'w') as file:

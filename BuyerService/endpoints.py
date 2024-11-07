@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from buyer_repository import BuyerRepository
 
 router = APIRouter()
-buyer_repo = BuyerRepository(file_path='/data/buyers.json')
+buyer_repo = BuyerRepository(file_path='./data/buyers.json')
 
 # Request model for buyer data
 class BuyerCreateRequest(BaseModel):

@@ -1,0 +1,20 @@
+{
+    "88fdd204-ae01-425b-87e6-8f5546d2815e": {
+        "name": "Sindri",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    },
+    "685321b7-d077-4951-89f3-3273e7d22536": {
+        "name": "Sindri 2",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    },
+    "70f69688-b84e-473e-a903-b3cc844146a1": {
+        "name": "Sindri 3",
+        "ssn": "4000000000",
+        "email": "email2@email.com",
+        "phoneNumber": "1234567"
+    }
+}
