@@ -9,5 +9,14 @@ services:
       - ./BuyerService:/app
       - ./BuyerService/data:/app/data  # Make sure your db file is here for persistence
 
+  inventory-service:
+    build: ./InventoryService
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./InventoryService:/app
+      - ./InventoryService/data:/app/data 
+
 volumes:
   buyer-service-data:
+  inventory-service-data:
