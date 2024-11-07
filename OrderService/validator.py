@@ -4,7 +4,8 @@ from models import OrderRequest
 import httpx
 
 MERCHANT_URL = "http://localhost:8001/merchants/"
-BUYER_URL = "http://localhost:8002/buyer/"
+BUYER_URL = "http://localhost:8002/buyers/"
+PRODUCTS_URL = "http://localhost:8003/products/"
 
 async def validate_order(order: OrderRequest) -> None:
     """Validate the order details by making GET requests to MerchantService and BuyerService."""
@@ -25,10 +26,11 @@ async def validate_order(order: OrderRequest) -> None:
     buyer = buyer_response.json()
 
     # Validate product
-    if order.productId not in merchant.get("products", {}):
+    product_response = await client.get(PRODUCTS_URL + str(order.productId))  # Ensure buyerId is a string
+    if product_response.status_code != 200:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Product does not exist")
 
-    product = merchant["products"][order.productId]
+    product = product_response.json()
 
     # Check if product is sold out
     if product["stock"] <= 0:
