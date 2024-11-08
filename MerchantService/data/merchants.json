@@ -103,5 +103,12 @@
         "email": "email@email.com",
         "phoneNumber": "1234567",
         "allowsDiscount": true
+    },
+    "16": {
+        "name": "Olli",
+        "ssn": "4000000000",
+        "email": "oliver23@ru.is",
+        "phoneNumber": "7775893",
+        "allowsDiscount": true
     }
 }

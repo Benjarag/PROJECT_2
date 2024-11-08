@@ -54,5 +54,61 @@
         "price": 28.0,
         "quantity": 27,
         "reserved": 1
+    },
+    "9": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "10": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "11": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "12": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "13": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "14": {
+        "merchantId": 9,
+        "productName": "product test 9",
+        "price": 29.0,
+        "quantity": 29,
+        "reserved": 0
+    },
+    "15": {
+        "merchantId": 15,
+        "productName": "product test 15",
+        "price": 35.0,
+        "quantity": 35,
+        "reserved": 0
+    },
+    "16": {
+        "merchantId": 16,
+        "productName": "product test 16",
+        "price": 36.0,
+        "quantity": 33,
+        "reserved": 3
     }
 }

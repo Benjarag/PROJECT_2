@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException
+import httpx
 from order_event_sender import publish_event
 from utils import calculate_total_price, mask_card_number
 from order_repository import OrderRepository
@@ -26,9 +27,24 @@ async def create_order(order: OrderRequest):
     if order is None:
         raise HTTPException(status_code=404, detail="Order does not exist")
 
-    product = order["productId"].json()
-    merchant = order["merchantId"].json()
-    buyer = order["buyerId"].json()
+    async with httpx.AsyncClient() as client:
+        # Fetch product details via HTTP request
+        product_response = await client.get(f'http://product-service/api/products/{order["productId"]}')
+        if product_response.status_code != 200:
+            raise HTTPException(status_code=404, detail="Product not found")
+        product = product_response.json()
+
+        # Fetch merchant details via HTTP request
+        merchant_response = await client.get(f'http://merchant-service/api/merchants/{order["merchantId"]}')
+        if merchant_response.status_code != 200:
+            raise HTTPException(status_code=404, detail="Merchant not found")
+        merchant = merchant_response.json()
+
+        # Fetch buyer details via HTTP request
+        buyer_response = await client.get(f'http://buyer-service/api/buyers/{order["buyerId"]}')
+        if buyer_response.status_code != 200:
+            raise HTTPException(status_code=404, detail="Buyer not found")
+        buyer = buyer_response.json()
 
     event_data = {
         "order_id": order_id,  # Correct access to order data
