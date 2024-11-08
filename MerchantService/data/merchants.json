@@ -110,5 +110,12 @@
         "email": "oliver23@ru.is",
         "phoneNumber": "7775893",
         "allowsDiscount": true
+    },
+    "17": {
+        "name": "Jason",
+        "ssn": "4000000000",
+        "email": "jason23@ru.is",
+        "phoneNumber": "7775893",
+        "allowsDiscount": true
     }
 }

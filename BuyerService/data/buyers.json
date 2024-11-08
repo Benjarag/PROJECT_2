@@ -94,5 +94,11 @@
         "ssn": "4000000000",
         "email": "haukurbesti@gmail.com",
         "phoneNumber": "7775756"
+    },
+    "17": {
+        "name": "Jason",
+        "ssn": "4000002000",
+        "email": "jason23@ru.is",
+        "phoneNumber": "1234567"
     }
 }

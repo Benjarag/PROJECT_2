@@ -1,7 +1,13 @@
-class OrderMail:
-    def __init__(self, orderId, buyerMail, merchantMail, productName, totalPrice) -> None:
-        self.orderId = orderId
-        self.buyerMail = buyerMail
-        self.merchantMail = merchantMail
-        self.productName = productName
-        self.totalPrice = totalPrice
+from pydantic import BaseModel
+
+
+class OrderMail(BaseModel):
+    order_id: int
+    buyer_mail: str
+    merchant_mail: str
+    product_price: int
+    product_name: str
+    card_number: str
+    year_expiration: int
+    month_expiration: int
+    cvc: int

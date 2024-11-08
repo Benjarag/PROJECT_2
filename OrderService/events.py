@@ -19,4 +19,4 @@ class EventManager:
 
     @retry(pika.exceptions.AMQPConnectionError, delay=5, jitter=(1, 3))
     def __get_connection(self):
-        return pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST))
+        return pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, heartbeat=120))

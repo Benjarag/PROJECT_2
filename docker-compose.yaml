@@ -7,7 +7,7 @@ services:
       - "8002:8002"
     volumes:
       - ./BuyerService:/app
-      - ./BuyerService/data:/app/data  # Make sure your db file is here for persistence
+      - ./BuyerService/data:/app/data
   
   merchant-service:
     build: ./MerchantService
@@ -15,7 +15,7 @@ services:
       - "8001:8001"
     volumes:
       - ./MerchantService:/app
-      - ./MerchantService/data:/app/data  # Make sure your db file is here for persistence
+      - ./MerchantService/data:/app/data
 
   inventory-service:
     build: ./InventoryService
@@ -51,8 +51,8 @@ services:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
     ports:
-      - "5672:5672"   # Port for RabbitMQ
-      - "15672:15672" # Port for RabbitMQ Management UI
+      - "5672:5672"   
+      - "15672:15672" 
 
 volumes:
   buyer-service-data:
