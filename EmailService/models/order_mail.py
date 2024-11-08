@@ -5,7 +5,7 @@ class OrderMail(BaseModel):
     order_id: int
     buyer_mail: str
     merchant_mail: str
-    product_price: int
+    product_price: float
     product_name: str
     card_number: str
     year_expiration: int

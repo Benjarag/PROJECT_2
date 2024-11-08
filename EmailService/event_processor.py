@@ -15,7 +15,7 @@ class MailEventProcessor:
             buyer_mail = data.get('buyer_mail')
             merchant_mail = data.get('merchant_mail')
             product_name = data.get('product_name')
-            product_price = data.get('total_price') or 0
+            product_price = data.get('product_price') or 0.0
             card_number = data.get('card_number')
             year_expiration = data.get('year_expiration')
             month_expiration = data.get('month_expiration')
@@ -63,13 +63,13 @@ class MailEventProcessor:
         self.mail_sender.send_email(
             to_email=message.buyer_mail, 
             subject='Order has been created',
-            html_content=f'Order: {message.order_id} {message.product_name} ${message.product_price}'
+            html_content=f'Order: {message.order_id}, Product: {message.product_name}, Price: ${message.product_price}'
         )
         print(f"Sending email to merchant: {message.merchant_mail}")
         self.mail_sender.send_email(
             to_email=message.merchant_mail, 
             subject='Order has been created',
-            html_content=f'Order: {message.order_id} {message.product_name} ${message.product_price}'
+            html_content=f'Order: {message.order_id}, Product: {message.product_name}, Price: ${message.product_price}'
         )
         
 
