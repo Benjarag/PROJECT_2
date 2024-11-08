@@ -24,8 +24,8 @@
         "merchantId": 4,
         "productName": "product name benjamin test",
         "price": 125,
-        "quantity": 18,
-        "reserved": 7
+        "quantity": 17,
+        "reserved": 8
     },
     "5": {
         "merchantId": 5,

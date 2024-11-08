@@ -10,28 +10,7 @@ class MailEventProcessor:
     def process_order(self, ch, method, properties, body):
         message = body.decode()
         try:
-            data = json.loads(message)
-            order_id = data.get('order_id')
-            buyer_mail = data.get('buyer_mail')
-            merchant_mail = data.get('merchant_mail')
-            product_name = data.get('product_name')
-            product_price = data.get('product_price') or 0.0
-            card_number = data.get('card_number')
-            year_expiration = data.get('year_expiration')
-            month_expiration = data.get('month_expiration')
-            cvc = data.get('cvc')
-            
-            order_message = OrderMail(
-                order_id=order_id,
-                buyer_mail=buyer_mail,
-                merchant_mail=merchant_mail,
-                product_name=product_name,
-                product_price=product_price,
-                card_number=card_number,
-                year_expiration=year_expiration,
-                month_expiration=month_expiration,
-                cvc=cvc
-            )
+            order_message = self._process_order_data(message)
             self.push_order_mail(order_message)
         except json.JSONDecodeError:
             print("Failed to decode JSON")
@@ -99,3 +78,29 @@ class MailEventProcessor:
             )
         else:
             raise json.JSONDecodeError
+           
+    def _process_order_data(self, message):
+        data = json.loads(message)
+        order_id = data.get('order_id')
+        buyer_mail = data.get('buyer_mail')
+        merchant_mail = data.get('merchant_mail')
+        product_name = data.get('product_name')
+        product_price = data.get('product_price')
+        card_number = data.get('card_number')
+        year_expiration = data.get('year_expiration')
+        month_expiration = data.get('month_expiration')
+        cvc = data.get('cvc')
+            
+        order_message = OrderMail(
+            order_id=order_id,
+            buyer_mail=buyer_mail,
+            merchant_mail=merchant_mail,
+            product_name=product_name,
+            product_price=product_price,
+            card_number=card_number,
+            year_expiration=year_expiration,
+            month_expiration=month_expiration,
+            cvc=cvc
+            )
+        
+        return order_message
