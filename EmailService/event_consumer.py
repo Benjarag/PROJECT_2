@@ -7,12 +7,21 @@ class MailEventConsumer:
         self.rabbitmq_host = rabbitmq_host
         self.order_queue = order_queue
         self.payment_queue = payment_queue
+        
+        self.order_exchange = 'order_events'
+        self.payent_exchange = 'payment_events'
 
         #Rabbitmq
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rabbitmq_host))
         self.channel = self.connection.channel()
+        self.channel.exchange_declare(exchange=self.order_exchange)
+        self.channel.exchange_declare(exchange=self.payent_exchange)
+        
         self.channel.queue_declare(queue=self.order_queue)
         self.channel.queue_declare(queue=payment_queue)
+        
+        self.channel.queue_bind(exchange=self.order_exchange, queue=self.order_queue)
+        self.channel.queue_bind(exchange=self.payent_exchange, queue=self.payment_queue)
     
 
     
@@ -31,5 +40,5 @@ class MailEventConsumer:
         self.channel.basic_consume(queue=self.order_queue, on_message_callback=callback)
         self.channel.basic_consume(queue=self.payment_queue, on_message_callback=callback)
 
-
+        self.channel.basic_qos(prefetch_count=1)
         self.channel.start_consuming()

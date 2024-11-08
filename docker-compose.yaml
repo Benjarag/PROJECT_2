@@ -34,6 +34,13 @@ services:
       - ./OrderService/data:/app/data
     depends_on:
       - rabbitmq
+
+  email-service:
+    build: ./EmailService
+    depends_on:
+      - order-service
+      - rabbitmq
+
   
   rabbitmq:
     image: rabbitmq:3-management
