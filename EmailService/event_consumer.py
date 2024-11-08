@@ -31,5 +31,6 @@ class MailEventConsumer:
         self.channel.basic_consume(queue=self.order_queue, on_message_callback=callback)
         self.channel.basic_consume(queue=self.payment_queue, on_message_callback=callback)
 
+        self.channel.basic_qos(prefetch_count=1)
 
         self.channel.start_consuming()
