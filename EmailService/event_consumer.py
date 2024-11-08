@@ -25,6 +25,7 @@ class MailEventConsumer:
                 mail_processor.process_order(ch, method, properties, body)
             elif method.routing_key == self.payment_queue:
                 mail_processor.process_payment(ch, method, properties, body)
+            ch.basic_ack(delivery_tag=method.delivery_tag)
 
 
         self.channel.basic_consume(queue=self.order_queue, on_message_callback=callback)
