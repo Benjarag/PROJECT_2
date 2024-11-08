@@ -18,7 +18,7 @@ class MailEventConsumer:
         self.channel.queue_declare(queue=self.order_queue)
         self.channel.queue_declare(queue=payment_queue)
     
-    '''Implementa hvernig messages eru processed'''
+
     def process_order(self, ch, method, properties, body):
         message = body.decoded()
         try:
@@ -34,7 +34,8 @@ class MailEventConsumer:
                 merchantMail=merchantMail, 
                 productName=productName, 
                 totalPrice=totalPrice
-                )
+            )
+            self.push_order_mail(order_message)
         except json.JSONDecodeError:
             pass
         except KeyError as e:
@@ -43,17 +44,65 @@ class MailEventConsumer:
             pass
     
         
-    '''Implementa hvernig messages eru processed'''
-    def process_payment(self, ch, method, properties, body):
-        pass
-    
-    '''Implementa þegar það er ákveðið hvernig messages eru processed'''
-    def push_order_mail(self, message: OrderMail):
-        self.mail_sender.send_email()
 
-    '''Implementa þegar það er ákveðið hvernig messages eru processed'''
+    def process_payment(self, ch, method, properties, body):
+        message = body.decoded()
+        try:
+            data = json.loads(message)
+            orderId = data.get('orderId')
+            state = data.get('state')
+            payment_message=PaymentMail(
+                orderId=orderId,
+                state=state
+            )
+            self.push_payment_mail(payment_message)
+        except json.JSONDecodeError:
+            pass
+        except KeyError as e:
+            pass
+        finally:
+            pass
+    
+
+    def push_order_mail(self, message: OrderMail):
+        self.mail_sender.send_email(
+            to_email=message.buyerMail, 
+            subject='Order has been created',
+            html_content=f'Order: {message.orderId} {message.productName} ${message.totalPrice}'
+        )
+        self.mail_sender.send_email(
+            to_email=message.merchantMail, 
+            subject='Order has been created',
+            html_content=f'Order: {message.orderId} {message.productName} ${message.totalPrice}'
+        )
+        
+
+
     def push_payment_mail(self, message: PaymentMail):
-        self.mail_sender.send_email()
+        if message.state == 'successful':
+            self.mail_sender.send_email(
+                to_email=message.merchantMail, 
+                subject='Order has been purchased',
+                html_content=f'Order {message.orderId} has been successfully purchased'
+            )
+            self.mail_sender.send_email(
+                to_email=message.buyerMail, 
+                subject='Order has been purchased',
+                html_content=f'Order {message.orderId} has been successfully purchased'
+            )
+        elif message.state == 'failed':
+            self.mail_sender.send_email(
+                to_email=message.merchantMail, 
+                subject='Order purchase failed',
+                html_content=f'Order {message.orderId} has been successfully purchased'
+            )
+            self.mail_sender.send_email(
+                to_email=message.buyerMail, 
+                subject='Order purchase failed',
+                html_content=f'Order {message.orderId} purchase has failed'
+            )
+        else:
+            raise json.JSONDecodeError
 
     def start_consuming(self):
 
