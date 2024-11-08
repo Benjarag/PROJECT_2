@@ -20,6 +20,7 @@ async def validate_order(order: OrderRequest) -> None:
         buyer_response = await client.get(BUYER_URL + str(order.buyerId))
         if buyer_response.status_code != 200:
             raise HTTPException(status_code=400, detail="Buyer does not exist")
+        
         buyer = buyer_response.json()
 
         # Validate product
