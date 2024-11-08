@@ -23,6 +23,11 @@ services:
     volumes:
       - ./InventoryService:/app
       - ./InventoryService/data:/app/data 
+  
+  email-service:
+    build: ./EmailService
+    ports:
+      - "8004:8004"
 
 volumes:
   buyer-service-data:

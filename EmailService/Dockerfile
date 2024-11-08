@@ -11,12 +11,11 @@ COPY . /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the .env file to the container
+
 COPY .env /app/.env
 
-# Set environment variables (optional, in case the environment variables need defaults)
-ENV SENDGRID_API_KEY=""
-ENV SENDGRID_SENDER_MAIL=""
 
-# Run the script by default if not overridden
+
+
+
 CMD ["python", "./main.py"]

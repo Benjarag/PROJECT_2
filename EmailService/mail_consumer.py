@@ -20,7 +20,28 @@ class MailEventConsumer:
     
     '''Implementa hvernig messages eru processed'''
     def process_order(self, ch, method, properties, body):
-        pass
+        message = body.decoded()
+        try:
+            data = json.loads(message)
+            orderId = data.get('orderId')
+            buyerMail = data.get('buyerMail')
+            merchantMail = data.get('merchantMail')
+            productName = data.get('productName')
+            totalPrice = data.get('totalPrice')
+            order_message = OrderMail(
+                orderId=orderId, 
+                buyerMail=buyerMail, 
+                merchantMail=merchantMail, 
+                productName=productName, 
+                totalPrice=totalPrice
+                )
+        except json.JSONDecodeError:
+            pass
+        except KeyError as e:
+            pass
+        finally:
+            pass
+    
         
     '''Implementa hvernig messages eru processed'''
     def process_payment(self, ch, method, properties, body):

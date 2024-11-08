@@ -3,9 +3,9 @@ from mail_sender import MailSender
 
 '''EKKI ACTUAL MAIN FILE. BARA TIL AÐ TESTA SMÁ'''
 def main():
-    recipient_email = 'haukurbesti@gmail.com'
-    subject = 'DOCKER MAIL SENT'
-    html_content = "<p>YOU DID IT BIH</p>"
+    recipient_email = 'oliver23@ru.is'
+    subject = 'já fínt'
+    html_content = "<p>já sæll</p>"
 
     # Initialize the MailSender and send the email
     mail_sender = MailSender()
@@ -14,4 +14,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
