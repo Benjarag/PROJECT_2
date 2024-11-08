@@ -3,7 +3,7 @@ from event_consumer import MailEventConsumer
 
 def main():
     while True:
-        mail_consumer = MailEventConsumer
+        mail_consumer = MailEventConsumer()
         mail_consumer.start_consuming()
 
 

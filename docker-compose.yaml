@@ -40,6 +40,8 @@ services:
     depends_on:
       - order-service
       - rabbitmq
+    env_file:
+      - ./EmailService/.env
 
   
   rabbitmq:
