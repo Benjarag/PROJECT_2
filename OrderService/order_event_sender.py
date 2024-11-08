@@ -16,6 +16,6 @@ def publish_event(event_data: dict):
         body=json.dumps(event_data)
     )
 
-    print(f"Publishing order-event with order id: {event_data.get("order_id")}")
+    print(f"Publishing order-event with order id: {event_data.order_id}")
 
     connection.close()

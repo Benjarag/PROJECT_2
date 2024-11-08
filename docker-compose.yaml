@@ -37,11 +37,15 @@ services:
 
   email-service:
     build: ./EmailService
+    environment:
+      - SENDGRID_API_KEY=${SENDGRID_API_KEY}
+      - SENDGRID_SENDER_EMAIL=${SENDGRID_SENDER_EMAIL}
     depends_on:
-      - order-service
       - rabbitmq
+      - order-service
+    volumes:
+      - ./EmailService:/app
 
-  
   rabbitmq:
     image: rabbitmq:3-management
     environment:

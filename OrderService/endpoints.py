@@ -1,10 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from OrderService.order_event_sender import publish_event
+from order_event_sender import publish_event
 from utils import calculate_total_price, mask_card_number
 from order_repository import OrderRepository
 from validator import validate_order
 from models import OrderRequest
-from order_event_sender import publish_event
 
 # Create FastAPI app instance
 router = APIRouter()
