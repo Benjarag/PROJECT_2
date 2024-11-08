@@ -1,7 +1,6 @@
 import pika
 from event_processor import MailEventProcessor
 
-
 class MailEventConsumer:
     def __init__(self, rabbitmq_host='rabbitmq', order_queue='order_queue', payment_queue='payment_queue'):
         self.rabbitmq_host = rabbitmq_host
