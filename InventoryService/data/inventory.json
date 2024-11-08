@@ -108,7 +108,7 @@
         "merchantId": 16,
         "productName": "product test 16",
         "price": 36.0,
-        "quantity": 33,
-        "reserved": 3
+        "quantity": 28,
+        "reserved": 8
     }
 }

@@ -1,15 +1,21 @@
 from fastapi import APIRouter, HTTPException
 import httpx
-from order_event_sender import publish_event
 from utils import calculate_total_price, mask_card_number
 from order_repository import OrderRepository
 from validator import validate_order
 from models import OrderRequest
+from events import EventManager
 
 # Create FastAPI app instance
 router = APIRouter()
 # Assuming ORDER_SERVICE_URL is a dictionary that stores orders
 order_repo = OrderRepository(file_path='./data/orders.json')
+
+event_manager = EventManager()
+
+MERCHANT_URL = "http://merchant-service:8001/merchants/"
+BUYER_URL = "http://buyer-service:8002/buyers/"
+PRODUCTS_URL = "http://inventory-service:8003/products/"
 
 @router.post("/orders", status_code=201)
 async def create_order(order: OrderRequest):
@@ -26,22 +32,22 @@ async def create_order(order: OrderRequest):
     order = order_repo.get_order(order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="Order does not exist")
-
+    
     async with httpx.AsyncClient() as client:
         # Fetch product details via HTTP request
-        product_response = await client.get(f'http://product-service/api/products/{order["productId"]}')
+        product_response = await client.get(PRODUCTS_URL + str(order["productId"]))
         if product_response.status_code != 200:
             raise HTTPException(status_code=404, detail="Product not found")
         product = product_response.json()
 
         # Fetch merchant details via HTTP request
-        merchant_response = await client.get(f'http://merchant-service/api/merchants/{order["merchantId"]}')
+        merchant_response = await client.get(MERCHANT_URL + str(order["merchantId"]))
         if merchant_response.status_code != 200:
             raise HTTPException(status_code=404, detail="Merchant not found")
         merchant = merchant_response.json()
 
         # Fetch buyer details via HTTP request
-        buyer_response = await client.get(f'http://buyer-service/api/buyers/{order["buyerId"]}')
+        buyer_response = await client.get(BUYER_URL + str(order["buyerId"]))
         if buyer_response.status_code != 200:
             raise HTTPException(status_code=404, detail="Buyer not found")
         buyer = buyer_response.json()
@@ -51,13 +57,14 @@ async def create_order(order: OrderRequest):
         "buyer_mail": buyer["email"],
         "merchant_mail": merchant["email"],
         "product_price": product["price"],
-        "prduct_name": product["productName"],
+        "product_name": product["productName"],
+        "card_number": order["creditCard"]["cardNumber"],
         "year_expiration": order["creditCard"]["expirationYear"],
         "month_expiration": order["creditCard"]["expirationMonth"],
         "cvc": order["creditCard"]["cvc"]
     }
 
-    publish_event(event_data)
+    event_manager.publish_event(event_data)
 
     return {"order_id": order_id}
     

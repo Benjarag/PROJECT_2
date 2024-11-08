@@ -1,5 +1,6 @@
 import pika
 from event_processor import MailEventProcessor
+from retry import retry
 
 class MailEventConsumer:
     def __init__(self, rabbitmq_host='rabbitmq', order_queue='order_queue', payment_queue='payment_queue'):
@@ -11,10 +12,10 @@ class MailEventConsumer:
         self.payent_exchange = 'payment_events'
 
         #Rabbitmq
-        self.connection = pika.BlockingConnection(pika.ConnectionParameters(host=self.rabbitmq_host))
+        self.connection = self.__get_connection()
         self.channel = self.connection.channel()
-        self.channel.exchange_declare(exchange=self.order_exchange)
-        self.channel.exchange_declare(exchange=self.payent_exchange)
+        self.channel.exchange_declare(exchange=self.order_exchange, exchange_type='fanout')
+        self.channel.exchange_declare(exchange=self.payent_exchange, exchange_type='fanout')
         
         self.channel.queue_declare(queue=self.order_queue)
         self.channel.queue_declare(queue=payment_queue)
@@ -41,3 +42,7 @@ class MailEventConsumer:
 
         self.channel.basic_qos(prefetch_count=1)
         self.channel.start_consuming()
+
+    @retry(pika.exceptions.AMQPConnectionError, delay=5, jitter=(1, 3))
+    def __get_connection(self):
+        return pika.BlockingConnection(pika.ConnectionParameters(host=self.rabbitmq_host))
