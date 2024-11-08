@@ -11,11 +11,6 @@ COPY . /app
 COPY requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-
 COPY .env /app/.env
-
-
-
-
 
 CMD ["python", "./main.py"]
