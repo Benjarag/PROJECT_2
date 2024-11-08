@@ -10,7 +10,7 @@ product_repo = InventoryRepository(file_path='./data/inventory.json')
 class InventoryCreateRequest(BaseModel):
     merchantId: int
     productName: str
-    price: int
+    price: float
     quantity: int
 
 # Endpoint to create a product
@@ -32,3 +32,9 @@ async def get_product(id: str):
         raise HTTPException(status_code=404, detail="Product does not exist")
     return product
 
+@router.put("/products/{id}", status_code=200)
+async def update_product(id: str):
+   product_id, product = product_repo.update_product(id)
+   if product is None:
+       raise HTTPException(status_code=404, detail="Product does not exist")
+   return {"product_id": product_id}

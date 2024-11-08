@@ -28,5 +28,5 @@ async def create_buyer(buyer: BuyerCreateRequest):
 async def get_buyer(id: str):
     buyer = buyer_repo.get_buyer(id)
     if buyer is None:
-        raise HTTPException(status_code=404, detail="Buyer not found")
+        raise HTTPException(status_code=404, detail="Buyer does not exist")
     return buyer

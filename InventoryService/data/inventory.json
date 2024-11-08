@@ -19,5 +19,33 @@
         "price": 123,
         "quantity": 20,
         "reserved": 0
+    },
+    "4": {
+        "merchantId": 4,
+        "productName": "product name benjamin test",
+        "price": 125,
+        "quantity": 22,
+        "reserved": 3
+    },
+    "5": {
+        "merchantId": 5,
+        "productName": "some product name",
+        "price": 24,
+        "quantity": 24,
+        "reserved": 0
+    },
+    "6": {
+        "merchantId": 5,
+        "productName": "product test 6",
+        "price": 26.0,
+        "quantity": 25,
+        "reserved": 1
+    },
+    "7": {
+        "merchantId": 7,
+        "productName": "product test 7",
+        "price": 27.0,
+        "quantity": 26,
+        "reserved": 1
     }
 }

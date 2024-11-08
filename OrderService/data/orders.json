@@ -1,0 +1,38 @@
+{
+    "1": {
+        "productId": 4,
+        "merchantId": 4,
+        "buyerId": 4,
+        "creditCard": {
+            "cardNumber": "1234123412341234",
+            "expirationMonth": 8,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.2
+    },
+    "2": {
+        "productId": 6,
+        "merchantId": 5,
+        "buyerId": 6,
+        "creditCard": {
+            "cardNumber": "1234123412341234",
+            "expirationMonth": 8,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.2
+    },
+    "3": {
+        "productId": 7,
+        "merchantId": 7,
+        "buyerId": 7,
+        "creditCard": {
+            "cardNumber": "1234123412341234",
+            "expirationMonth": 8,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    }
+}
