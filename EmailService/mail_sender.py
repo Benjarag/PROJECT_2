@@ -17,8 +17,4 @@ class MailSender:
             response = sg.send(message)
         except Exception as e:
             pass
-
-
-
-
-    
+ 
