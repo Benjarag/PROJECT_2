@@ -34,5 +34,17 @@
             "cvc": 123
         },
         "discount": 0.1
+    },
+    "4": {
+        "productId": 8,
+        "merchantId": 8,
+        "buyerId": 8,
+        "creditCard": {
+            "cardNumber": "1234123412341234",
+            "expirationMonth": 8,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
     }
 }

@@ -47,5 +47,12 @@
         "price": 27.0,
         "quantity": 26,
         "reserved": 1
+    },
+    "8": {
+        "merchantId": 8,
+        "productName": "product test 8",
+        "price": 28.0,
+        "quantity": 27,
+        "reserved": 1
     }
 }

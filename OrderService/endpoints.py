@@ -1,19 +1,15 @@
 from fastapi import APIRouter, HTTPException
-import httpx
+from OrderService.order_event_sender import publish_event
 from utils import calculate_total_price, mask_card_number
 from order_repository import OrderRepository
 from validator import validate_order
-from models import OrderRequest, OrderResponse
+from models import OrderRequest
+from order_event_sender import publish_event
 
 # Create FastAPI app instance
 router = APIRouter()
 # Assuming ORDER_SERVICE_URL is a dictionary that stores orders
 order_repo = OrderRepository(file_path='./data/orders.json')
-PRODUCTS_URL = "http://inventory-service:8003/products/"
-
-
-# update the OrderService json, with get from inventory buyer and merchant 
-
 
 @router.post("/orders", status_code=201)
 async def create_order(order: OrderRequest):
@@ -27,6 +23,27 @@ async def create_order(order: OrderRequest):
         discount=order.discount
     )
     # send an event that the order has been created
+    order = order_repo.get_order(order_id)
+    if order is None:
+        raise HTTPException(status_code=404, detail="Order does not exist")
+
+    product = order["productId"].json()
+    merchant = order["merchantId"].json()
+    buyer = order["buyerId"].json()
+
+    event_data = {
+        "order_id": order_id,  # Correct access to order data
+        "buyer_mail": buyer["email"],
+        "merchant_mail": merchant["email"],
+        "product_price": product["price"],
+        "prduct_name": product["productName"],
+        "year_expiration": order["creditCard"]["expirationYear"],
+        "month_expiration": order["creditCard"]["expirationMonth"],
+        "cvc": order["creditCard"]["cvc"]
+    }
+
+    publish_event(event_data)
+
     return {"order_id": order_id}
     
 # Assuming the InventoryService is running at this base URL
@@ -38,14 +55,8 @@ async def get_order(id: str):
 
     if order is None:
         raise HTTPException(status_code=404, detail="Order does not exist")
-
-    # Make a request to the InventoryService to fetch the product details
-    async with httpx.AsyncClient() as client:
-        product_response = await client.get(PRODUCTS_URL + str(order.get('productId')))  # Use .get() to access the key safely        if product_response.status_code != 200:
-        if product_response.status_code != 200:
-            raise HTTPException(status_code=400, detail="Product does not exist")
     
-    product = product_response.json()
+    product = order["productId"].json()
 
     # Check if the product price exists
     if product.get("price") is None:
