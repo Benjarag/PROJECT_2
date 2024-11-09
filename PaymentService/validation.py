@@ -1,11 +1,30 @@
 import json
-from consume import PaymentConsumer
 import pika
+import threading
+from consume import PaymentConsumer
 
 card_data = PaymentConsumer.get_payment_data() # hér eru upl. frá order service í 'VONA ÉG' réttu formatti
+consumer = PaymentConsumer()
 
+def start_consuming():
+    consumer.start_consuming()
+
+thread = threading.Thread(target=start_consuming)
+thread.start()
+
+payment_data = PaymentConsumer.get_payment_data()
+if payment_data: 
+    credit_card_info = payment_data["card_number"] 
+    year_info = payment_data["year_expiration"]
+    month_info = payment_data["month_expiration"]
+    cvc_info = payment_data["cvc"]
+    order_id = payment_data["order_id"]
+else:
+    pass
 
 class Validate:
+
+    global credit_card_info, year_info, month_info, cvc_info, order_id
 
     def validate_cardNumber(self, card_number: str) -> bool:
         card_number = card_number.replace(" ", "")
@@ -35,17 +54,17 @@ class Validate:
         card_number = card_number.replace(" ", "")
         return len(card_cvc) == 3
 
-    def validate_all(self, card_data) -> bool:
-        if self.validate_cardNumber(card_data["card_number"]) == False:
+    def validate_all(self) -> bool:
+        if self.validate_cardNumber(credit_card_info) == False:
             return "fail"
-        elif self.validate_year(card_data["year_expiration"]) == False:
+        elif self.validate_year(year_info) == False:
             return "fail"
-        elif self.validate_month(card_data["month_expiration"]) == False:
+        elif self.validate_month(month_info) == False:
             return "fail"
-        elif self.validate_cvc(card_data["cvc"]) == False:
+        elif self.validate_cvc(cvc_info) == False:
             return "fail"
-    
-        return "success"
+        else:
+            return "success"
     
         # return (
         #     self.validate_cardNumber(card_data["cardNumber"]) and
@@ -68,9 +87,14 @@ def publish_event(event_type, message):
     channel.basic_publish(exchange='payment_events', routing_key=event_type, body=json.dumps(message))
     connection.close()
 
-validation_result = Validate().validate_all(card_data)
+validation_result = Validate().validate_all()
 
-if validation_result == "success":
-    publish_event('paymentComplete', {'status': 'success', 'orderId': f"{PaymentConsumer.get_order_id()}"})
-else:
-    publish_event('paymentFailed', {'status': 'fail', 'card_data': f"{PaymentConsumer.get_order_id()}"})
+
+# publish_event('paymentInfo', {'status': '{validation_result}', 'orderId': f"{order_id}"})
+publish_event('fanout', [
+    {
+        "orderId": f"{order_id}",
+        "paymentInfo": f"{validation_result}"
+    }
+])
+publish_event()

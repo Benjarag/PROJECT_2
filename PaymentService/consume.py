@@ -3,17 +3,20 @@ import pika
 import json
 
 class PaymentConsumer:
-    connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
-    channel = connection.channel()
-    payment_data = None 
+    def __init__(self):
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+        self.channel = self.connection.channel()
+        self.payment_data = None 
 
     def callback(self, ch, method, properties, body):
+        message = json.loads(body.decode())
         print(" [x] Received %r" % body)
         self.payment_data = json.loads(body)  # hér er hægt að vinna með upplýsingarnar sem order service sendir
+        return message
 
     def start_consuming(self):
         self.channel.exchange_declare(queue='order_queue')
-        self.channel.basic_consume(queue='order_queue', exchange_type="fanout")
+        self.channel.basic_consume(exchange='order_queue', exchange_type="fanout")
 
         routing_key = 'payment_queue'
         self.channel.queue_declare(queue=routing_key)
@@ -30,11 +33,3 @@ class PaymentConsumer:
     def get_order_id(self):
         self.order_id = self.payment_data.get("orderId") if self.payment_data else None
         return self.order_id
-    
-
-[
-    {
-    "orderId": "123",
-    "Validation": "Success/Fail"
-    }
-]

@@ -32,7 +32,11 @@ services:
     volumes:
       - ./InventoryService:/app
       - ./InventoryService/data:/app/data 
-
+  payment-service:
+    build: ./PaymentService
+    volumes:
+      - ./PaymentService:/app
+      - ./PaymentService/data:/app/data
 volumes:
   buyer-service-data:
   inventory-service-data:
