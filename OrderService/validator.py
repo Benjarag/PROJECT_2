@@ -10,33 +10,33 @@ async def validate_order(order: OrderRequest) -> None:
     """Validate the order details by making GET requests to MerchantService, BuyerService, and InventoryService."""
     
     async with httpx.AsyncClient() as client:
-        # Validate merchant
+        # Merchant validation
         merchant_response = await client.get(MERCHANT_URL + str(order.merchantId))
         if merchant_response.status_code != 200:
             raise HTTPException(status_code=400, detail="Merchant does not exist")
         merchant = merchant_response.json()
 
-        # Validate buyer
+        # Buyer validation
         buyer_response = await client.get(BUYER_URL + str(order.buyerId))
         if buyer_response.status_code != 200:
             raise HTTPException(status_code=400, detail="Buyer does not exist")
         
         buyer = buyer_response.json()
 
-        # Validate product
+        # Product validation
         product_response = await client.get(PRODUCTS_URL + str(order.productId))
         if product_response.status_code != 200:
             raise HTTPException(status_code=400, detail="Product does not exist")
         product = product_response.json()
 
         if product["quantity"] <= 0:
-            raise HTTPException(status_code=400, detail="Product is sold out")
+            raise HTTPException(status_code=400, detail="Product has sold out")
 
         if product["merchantId"] != order.merchantId:
             raise HTTPException(status_code=400, detail="Product does not belong to merchant")
 
         if not merchant["allowsDiscount"] and order.discount != 0:
-            raise HTTPException(status_code=400, detail="Merchant does not allow discount")
+            raise HTTPException(status_code=400, detail="Merchant does not allow any discount")
 
         product_reserve_response = await client.put(PRODUCTS_URL + str(order.productId))
         if product_reserve_response.status_code != 200:

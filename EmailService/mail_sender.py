@@ -17,5 +17,5 @@ class MailSender:
             response = sg.send(message)
             print(f"Email sent to {to_email} with status code {response.status_code}")
         except Exception as e:
-            print(f"Error sending email to {to_email}: {e}")
+            print(f"Sending error email to {to_email}: {e}")
  

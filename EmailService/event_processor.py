@@ -5,31 +5,31 @@ import json
 
 class MailEventProcessor:
     def __init__(self) -> None:
-        self.mail_sender = MailSender()
+        self.email_sender = MailSender()
     
-    def process_order(self, ch, method, properties, body):
-        message = body.decode()
+    def handle_purchase_event(self, channel, delivery_method, msg_properties, msg_body):
+        event_message = msg_body.decode()
         try:
-            order_message = self._process_order_data(message)
-            self.push_order_mail(order_message)
+            purchase_message = self._process_order_data(event_message)
+            self.send_purchase_email(purchase_message)
         except json.JSONDecodeError:
-            print("Failed to decode JSON")
+            print("Failed to decode from JSON")
         except KeyError as e:
-            print(f"Missing key in event data: {e}")
+            print(f"Missing the key in event data: {e}")
         finally:
-            print("Finished processing order event")
+            print("Processing purchase event done")
     
-    def process_payment(self, ch, method, properties, body):
-        message = body.decode()
+    def handle_transaction_event(self, channel, delivery_method, msg_properties, msg_body):
+        event_message = msg_body.decode()
         try:
-            data = json.loads(message)
-            orderId = data.get('orderId')
-            state = data.get('state')
-            payment_message=PaymentMail(
-                orderId=orderId,
-                state=state
+            event_data = json.loads(event_message)
+            transaction_id = event_data.get('orderId')
+            transaction_state = event_data.get('state')
+            transaction_message = PaymentMail(
+                orderId=transaction_id,
+                state=transaction_state
             )
-            self.push_payment_mail(payment_message)
+            self.send_transaction_email(transaction_message)
         except json.JSONDecodeError:
             pass
         except KeyError as e:
@@ -37,70 +37,44 @@ class MailEventProcessor:
         finally:
             pass
     
-    def push_order_mail(self, message: OrderMail):
-        print(f"Sending email to buyer: {message.buyer_mail}")
-        self.mail_sender.send_email(
-            to_email=message.buyer_mail, 
+    def send_purchase_email(self, purchase_message: OrderMail):
+        print(f"Sending email to buyer: {purchase_message.buyer_mail}")
+        self.email_sender.send_email(
+            to_email=purchase_message.buyer_mail, 
             subject='Order has been created',
-            html_content=f'Order: {message.order_id}, Product: {message.product_name}, Price: ${message.product_price}'
+            html_content=f'Order: {purchase_message.order_id}, Product: {purchase_message.product_name}, Price: ${purchase_message.product_price}'
         )
-        print(f"Sending email to merchant: {message.merchant_mail}")
-        self.mail_sender.send_email(
-            to_email=message.merchant_mail, 
+        print(f"Sending email to merchant: {purchase_message.merchant_mail}")
+        self.email_sender.send_email(
+            to_email=purchase_message.merchant_mail, 
             subject='Order has been created',
-            html_content=f'Order: {message.order_id}, Product: {message.product_name}, Price: ${message.product_price}'
+            html_content=f'Order: {purchase_message.order_id}, Product: {purchase_message.product_name}, Price: ${purchase_message.product_price}'
         )
         
 
-
-    def push_payment_mail(self, message: PaymentMail):
-        if message.state == 'successful':
-            self.mail_sender.send_email(
-                to_email=message.merchantMail, 
+    def send_transaction_email(self, transaction_message: PaymentMail):
+        if transaction_message.state == 'successful':
+            self.email_sender.send_email(
+                to_email=transaction_message.merchantMail, 
                 subject='Order has been purchased',
-                html_content=f'Order {message.orderId} has been successfully purchased'
+                html_content=f'Order {transaction_message.orderId} has been successfully purchased'
             )
-            self.mail_sender.send_email(
-                to_email=message.buyerMail, 
+            self.email_sender.send_email(
+                to_email=transaction_message.buyerMail, 
                 subject='Order has been purchased',
-                html_content=f'Order {message.orderId} has been successfully purchased'
+                html_content=f'Order {transaction_message.orderId} has been successfully purchased'
             )
-        elif message.state == 'failed':
-            self.mail_sender.send_email(
-                to_email=message.merchantMail, 
+        elif transaction_message.state == 'failed':
+            self.email_sender.send_email(
+                to_email=transaction_message.merchantMail, 
                 subject='Order purchase failed',
-                html_content=f'Order {message.orderId} has been successfully purchased'
+                html_content=f'Order {transaction_message.orderId} has failed'
             )
-            self.mail_sender.send_email(
-                to_email=message.buyerMail, 
+            self.email_sender.send_email(
+                to_email=transaction_message.buyerMail, 
                 subject='Order purchase failed',
-                html_content=f'Order {message.orderId} purchase has failed'
+                html_content=f'Order {transaction_message.orderId} purchase has failed'
             )
         else:
             raise json.JSONDecodeError
-           
-    def _process_order_data(self, message):
-        data = json.loads(message)
-        order_id = data.get('order_id')
-        buyer_mail = data.get('buyer_mail')
-        merchant_mail = data.get('merchant_mail')
-        product_name = data.get('product_name')
-        product_price = data.get('product_price')
-        card_number = data.get('card_number')
-        year_expiration = data.get('year_expiration')
-        month_expiration = data.get('month_expiration')
-        cvc = data.get('cvc')
-            
-        order_message = OrderMail(
-            order_id=order_id,
-            buyer_mail=buyer_mail,
-            merchant_mail=merchant_mail,
-            product_name=product_name,
-            product_price=product_price,
-            card_number=card_number,
-            year_expiration=year_expiration,
-            month_expiration=month_expiration,
-            cvc=cvc
-            )
-        
-        return order_message
+
