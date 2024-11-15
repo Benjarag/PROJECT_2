@@ -1,18 +1,18 @@
 import uvicorn
 from fastapi import FastAPI
-import endpoints  # Make sure this imports your endpoints
+import endpoints 
 
-def create_app() -> FastAPI:
-    # Create the FastAPI app
-    app = FastAPI()
+def initialize_app() -> FastAPI:
 
-    # Include the endpoints router
-    app.include_router(endpoints.router)
+    App = FastAPI()
 
-    return app
+    
+    App.include_router(endpoints.router)
 
-# Create the app instance
-app = create_app()
+    return App
+
+
+App = initialize_app()
 
 if __name__ == '__main__':
     uvicorn.run('application:app', host='0.0.0.0', port=8003, reload=True)
