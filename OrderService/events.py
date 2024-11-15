@@ -13,10 +13,10 @@ class EventManager:
     def publish_event(self, event_data: dict):
         self.channel.basic_publish(
         exchange="order_events",
-        body=json.dumps(event_data),
-        routing_key=''
+        routing_key='',
+        body=json.dumps(event_data)
         )
 
     @retry(pika.exceptions.AMQPConnectionError, delay=5, jitter=(1, 3))
     def __get_connection(self):
-        return pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST, heartbeat=120))
+        return pika.BlockingConnection(pika.ConnectionParameters(host=RABBITMQ_HOST))
