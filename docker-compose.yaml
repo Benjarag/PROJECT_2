@@ -54,16 +54,6 @@ services:
       - "5672:5672"   
       - "15672:15672" 
 
-  payment-service:
-    build: ./PaymentService
-    ports:
-      - "8004:8004"
-    volumes:
-      - ./PaymentService:/app
-      - ./PaymentService/app/database:/app/database
-    depends_on:
-      - rabbitmq
-
 volumes:
   buyer-service-data:
   inventory-service-data:
