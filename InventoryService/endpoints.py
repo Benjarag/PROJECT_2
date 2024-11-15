@@ -6,14 +6,12 @@ from inventory_repository import InventoryRepository
 router = APIRouter()
 product_repo = InventoryRepository(file_path='./data/inventory.json')
 
-# Request model for product data
 class InventoryCreateRequest(BaseModel):
     merchantId: int
     productName: str
     price: float
     quantity: int
 
-# Endpoint to create a product
 @router.post("/products", status_code=201)
 async def create_product(product: InventoryCreateRequest):
     product_id = product_repo.save_product(
@@ -24,7 +22,6 @@ async def create_product(product: InventoryCreateRequest):
     )
     return {"product_id": product_id}
 
-# Endpoint to retrieve a Product by ID
 @router.get("/products/{id}", status_code=200)
 async def get_product(id: str):
     product = product_repo.get_product(id)

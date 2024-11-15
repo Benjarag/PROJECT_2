@@ -12,7 +12,6 @@ class MailEventConsumer:
         self.order_exchange = 'order_events'
         self.payent_exchange = 'payment_events'
 
-        #Rabbitmq
         self.connection = self.__get_connection()
         self.channel = self.connection.channel()
 
@@ -29,13 +28,13 @@ class MailEventConsumer:
         def order_callback(ch, method, properties, body):
             mail_processor = MailEventProcessor()
             data = json.loads(body)
-            print(f"Received Order-Created event: {data}")  # Log the received event
+            print(f"Received Order-Created event: {data}")
             mail_processor.process_order(ch, method, properties, body)
 
         def payment_callback(ch, method, properties, body):
             mail_processor = MailEventProcessor()
             data = json.loads(body)
-            print(f"Received Payment event: {data}")  # Log the received event
+            print(f"Received Payment event: {data}")  
             mail_processor.process_payment(ch, method, properties, body)
 
 

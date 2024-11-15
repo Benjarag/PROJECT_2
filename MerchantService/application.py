@@ -1,10 +1,10 @@
 import uvicorn
 from fastapi import FastAPI
-from endpoints import router  # Now we import router directly from endpoints
+from endpoints import router  
 
 def create_app() -> FastAPI:
     app = FastAPI()
-    app.include_router(router)  # Directly register the router here
+    app.include_router(router) 
     return app
 
 app = create_app()

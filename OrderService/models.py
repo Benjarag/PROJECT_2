@@ -14,7 +14,6 @@ class OrderRequest(BaseModel):
     creditCard: CreditCard
     discount: float
 
-# Response model for GET /orders/{id}
 class OrderResponse(BaseModel):
     productId: int
     merchantId: int

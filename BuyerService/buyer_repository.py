@@ -14,8 +14,7 @@ class BuyerRepository:
         with open(self.file_path, 'r+') as file:
             buyers = json.load(file)
             
-            # Find the next available integer ID
-            next_id = len(buyers) + 1  # Just use the next available number
+            next_id = len(buyers) + 1
             
             buyer_data = {
                 "name": name,
@@ -24,15 +23,13 @@ class BuyerRepository:
                 "phoneNumber": phone_number
             }
 
-            # Save the new buyer with the next available ID
-            buyers[next_id] = buyer_data  # Use an integer ID
+            buyers[next_id] = buyer_data  
             file.seek(0)
-            json.dump(buyers, file, indent=4)  # Save back to file
+            json.dump(buyers, file, indent=4) 
 
-        return next_id  # Return the new buyer's ID
+        return next_id 
 
     def get_buyer(self, buyer_id: int) -> dict:
-        # Load the buyers and return the one matching the ID, or None if not found
         with open(self.file_path, 'r') as file:
             buyers = json.load(file)
-            return buyers.get(buyer_id)  # Directly access by integer ID
+            return buyers.get(buyer_id)  

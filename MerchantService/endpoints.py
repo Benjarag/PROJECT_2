@@ -5,7 +5,6 @@ from merchant_repository import MerchantRepository
 router = APIRouter()
 merchant_repo = MerchantRepository(file_path='./data/merchants.json')
 
-# Request model for buyer data
 class MerchantCreateRequest(BaseModel):
     name: str
     ssn: str
@@ -13,7 +12,6 @@ class MerchantCreateRequest(BaseModel):
     phoneNumber: str
     allowsDiscount: bool
 
-# Endpoint to create a buyer
 @router.post("/merchants", status_code=201)
 async def create_merchant(merchant: MerchantCreateRequest):
     merchant_id = merchant_repo.save_merchant(
@@ -25,7 +23,6 @@ async def create_merchant(merchant: MerchantCreateRequest):
     )
     return {"merchant_id": merchant_id}
 
-# Endpoint to retrieve a buyer by ID
 @router.get("/merchants/{id}", status_code=200)
 async def get_buyer(id: str):
     merchant = merchant_repo.get_merchant(id)

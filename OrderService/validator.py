@@ -29,19 +29,15 @@ async def validate_order(order: OrderRequest) -> None:
             raise HTTPException(status_code=400, detail="Product does not exist")
         product = product_response.json()
 
-        # Check if product is sold out
         if product["quantity"] <= 0:
             raise HTTPException(status_code=400, detail="Product is sold out")
 
-        # Validate product ownership
         if product["merchantId"] != order.merchantId:
             raise HTTPException(status_code=400, detail="Product does not belong to merchant")
 
-        # Check discount permission
         if not merchant["allowsDiscount"] and order.discount != 0:
             raise HTTPException(status_code=400, detail="Merchant does not allow discount")
 
-        # Reserve product
         product_reserve_response = await client.put(PRODUCTS_URL + str(order.productId))
         if product_reserve_response.status_code != 200:
             raise HTTPException(status_code=400, detail="Product reservation failed")

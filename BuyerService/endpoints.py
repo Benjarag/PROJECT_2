@@ -5,14 +5,12 @@ from buyer_repository import BuyerRepository
 router = APIRouter()
 buyer_repo = BuyerRepository(file_path='./data/buyers.json')
 
-# Request model for buyer data
 class BuyerCreateRequest(BaseModel):
     name: str
     ssn: str
     email: str
     phoneNumber: str
 
-# Endpoint to create a buyer
 @router.post("/buyers", status_code=201)
 async def create_buyer(buyer: BuyerCreateRequest):
     buyer_id = buyer_repo.save_buyer(
@@ -23,7 +21,6 @@ async def create_buyer(buyer: BuyerCreateRequest):
     )
     return {"buyer_id": buyer_id}
 
-# Endpoint to retrieve a buyer by ID
 @router.get("/buyers/{id}", status_code=200)
 async def get_buyer(id: str):
     buyer = buyer_repo.get_buyer(id)

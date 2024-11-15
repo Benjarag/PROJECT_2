@@ -274,5 +274,77 @@
             "cvc": 123
         },
         "discount": 0.1
+    },
+    "24": {
+        "productId": 18,
+        "merchantId": 18,
+        "buyerId": 17,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    },
+    "25": {
+        "productId": 18,
+        "merchantId": 18,
+        "buyerId": 4,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    },
+    "26": {
+        "productId": 4,
+        "merchantId": 4,
+        "buyerId": 17,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    },
+    "27": {
+        "productId": 4,
+        "merchantId": 4,
+        "buyerId": 17,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    },
+    "28": {
+        "productId": 18,
+        "merchantId": 18,
+        "buyerId": 17,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
+    },
+    "29": {
+        "productId": 18,
+        "merchantId": 18,
+        "buyerId": 17,
+        "creditCard": {
+            "cardNumber": "5351440515676544",
+            "expirationMonth": 7,
+            "expirationYear": 2025,
+            "cvc": 123
+        },
+        "discount": 0.1
     }
 }
